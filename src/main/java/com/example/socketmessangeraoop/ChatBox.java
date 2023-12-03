@@ -66,7 +66,7 @@ public class ChatBox implements Initializable {
 
     private void initializeClient() {
         try {
-            client = new Client(new Socket("localhost", 5555), username, targetUsername);
+            client = new Client(new Socket("localhost", 5555), username, targetUsername,this);
             System.out.println("Connected to server");
             client.listenForMessage();
         } catch (IOException e) {
@@ -80,12 +80,12 @@ public class ChatBox implements Initializable {
 
     public void receiveMessageFromServer(String message) {
         // Assuming the message format is "SenderUsername: Message"
-        String[] parts = message.split(": ");
+//        String[] parts = message.split(": ");
 
-            String senderUsername = parts[0];
-            String messageContent = parts[2];
+//            String senderUsername = parts[0];
+//            String messageContent = parts[2];
 
-            addLabel(senderUsername + ": " + messageContent);
+            addLabel( message);
 
     }
 

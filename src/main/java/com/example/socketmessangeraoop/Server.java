@@ -53,10 +53,9 @@ public class Server {
                 }
 
                 // Broadcast the received message to all connected clients
-                broadcastMessage("Server: " + message);
+                broadcastMessage(message);
             }
         } catch (IOException e) {
-
         } finally {
             // Remove the writer when the client disconnects
             clientWriters.remove(writer);

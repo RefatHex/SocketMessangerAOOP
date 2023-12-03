@@ -12,14 +12,16 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
     private String targetUsername;
+    ChatBox chatBox;
 
-    public Client(Socket socket, String username, String targetUsername) {
+    public Client(Socket socket, String username, String targetUsername,ChatBox chatBox) {
         try {
             this.socket = socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.username = username;
             this.targetUsername = targetUsername;
+            this.chatBox=chatBox;
         } catch (IOException e) {
             closeAll(socket, bufferedReader, bufferedWriter);
         }
@@ -84,10 +86,11 @@ public class Client {
                         System.out.println("Disconnected from the server.");
                         break;
                     }
-                    // Check if the message is from the target username
-//                    if (msgFromGChat.startsWith(targetUsername + ":")) {
+//                     Check if the message is from the target username
+                    if (msgFromGChat.startsWith(targetUsername + ":")) {
                         System.out.println(msgFromGChat);
-//                    }
+                    this.chatBox.receiveMessageFromServer(msgFromGChat);
+                    }
                 } catch (IOException e) {
                     closeAll(socket, bufferedReader, bufferedWriter);
                 }
