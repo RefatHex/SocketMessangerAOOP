@@ -29,7 +29,7 @@ public class ChatBox implements Initializable {
     @FXML
     private ScrollPane sp_main;
     private Client client;
-    private String username = "ras";
+    private String username = "rasel";
     private String targetUsername;
     @FXML
     private Button backBtn;

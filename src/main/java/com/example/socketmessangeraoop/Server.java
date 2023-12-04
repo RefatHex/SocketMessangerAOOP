@@ -67,10 +67,17 @@ public class Server {
 
     private static void sendBroadcastMessage(String senderUsername, String message) {
         System.out.println("Broadcasting message from " + senderUsername + ": " + message);
-        for (PrintWriter writer : clientWriters.values()) {
-            writer.println(senderUsername + ": " + message);
+        for (Map.Entry<String, PrintWriter> entry : clientWriters.entrySet()) {
+            String username = entry.getKey();
+            PrintWriter writer = entry.getValue();
+
+            // Skip the sender's PrintWriter
+            if (!username.equals(senderUsername)) {
+                writer.println(senderUsername + ": " + message);
+            }
         }
     }
+
 
     private static String readUsername(Socket clientSocket) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
