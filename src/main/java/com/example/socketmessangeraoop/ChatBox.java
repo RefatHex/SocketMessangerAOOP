@@ -1,6 +1,5 @@
 package com.example.socketmessangeraoop;
 
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,16 +29,13 @@ public class ChatBox implements Initializable {
     @FXML
     private ScrollPane sp_main;
     private Client client;
-    private String username = "nabil";
+    private String username = "ras";
     private String targetUsername;
     @FXML
     private Button backBtn;
 
     public void setData(String targetUsername) {
         this.targetUsername = targetUsername;
-//        if (client == null) {
-//            initializeClient();
-//        }
         initializeClient();
     }
 
@@ -66,7 +62,7 @@ public class ChatBox implements Initializable {
 
     private void initializeClient() {
         try {
-            client = new Client(new Socket("localhost", 5555), username, targetUsername,this);
+            client = new Client(new Socket("localhost", 5555), username, targetUsername, this);
             System.out.println("Connected to server");
             client.listenForMessage();
         } catch (IOException e) {
@@ -79,33 +75,28 @@ public class ChatBox implements Initializable {
     }
 
     public void receiveMessageFromServer(String message) {
-        // Assuming the message format is "SenderUsername: Message"
-//        String[] parts = message.split(": ");
-
-//            String senderUsername = parts[0];
-//            String messageContent = parts[2];
-
-            addLabel( message);
-
+        addLabel(message);
     }
 
     // Add a message to the UI
     private void addMessageToUI(String message, boolean isSentByMe) {
-        HBox hBox = new HBox();
-        hBox.setAlignment(isSentByMe ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(5, 5, 5, 10));
+        Platform.runLater(() -> {
+            HBox hBox = new HBox();
+            hBox.setAlignment(isSentByMe ? Pos.CENTER_RIGHT : Pos.CENTER_LEFT);
+            hBox.setPadding(new Insets(5, 5, 5, 10));
 
-        Text text = new Text(message);
-        TextFlow textFlow = new TextFlow(text);
-        textFlow.setStyle("-fx-color: rgb(239,242,255); " +
-                "-fx-background-color: " + (isSentByMe ? "rgb(15,125,242)" : "rgb(233,233,235)") +
-                ";-fx-background-radius: 20px;");
+            Text text = new Text(message);
+            TextFlow textFlow = new TextFlow(text);
+            textFlow.setStyle("-fx-color: rgb(239,242,255); " +
+                    "-fx-background-color: " + (isSentByMe ? "rgb(15,125,242)" : "rgb(233,233,235)") +
+                    ";-fx-background-radius: 20px;");
 
-        textFlow.setPadding(new Insets(5, 10, 5, 10));
-        text.setFill(isSentByMe ? Color.color(0.934, 0.945, 0.996) : Color.BLACK);
+            textFlow.setPadding(new Insets(5, 10, 5, 10));
+            text.setFill(isSentByMe ? Color.color(0.934, 0.945, 0.996) : Color.BLACK);
 
-        hBox.getChildren().add(textFlow);
-        vbox_messages.getChildren().add(hBox);
+            hBox.getChildren().add(textFlow);
+            vbox_messages.getChildren().add(hBox);
+        });
     }
 
     // Add this method to handle incoming messages and add them to the UI
